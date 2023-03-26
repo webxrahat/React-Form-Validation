@@ -23,12 +23,28 @@ const initialValues = {
 
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().min(6, 'Minimum 6 characters').required('required'),
+  firstName: Yup.string().min(6, 'Minimum 6 characters').max(10, 'Maximum 10 characters').required('required'),
   lastName: Yup.string().min(2, 'Minimum 2 characters').required('required'),
-  userName: Yup.string().matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})/,
-    "Must Contain 8 Characters and Maximum 20 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-  ).required('required'),
+  userName: Yup.string().required('required')
+    .matches(
+      /^(?=.*[a-z])/,
+      " Must Contain One Lowercase Character"
+    )
+    .matches(
+      /^(?=.*[A-Z])/,
+      "  Must Contain One Uppercase Character"
+    )
+    .matches(
+      /^(?=.*[0-9])/,
+      "  Must Contain One Number Character"
+    )
+    .matches(
+      /^(?=.*[!@#\$%\^&\*])/,
+      "  Must Contain  One Special Case Character"
+    )
+    .min(8, 'Must Contain 8 Characters')
+    .max(20, 'Maximum 20 Characters')
+  ,
   email: Yup.string().email('Invalid email address').required('required'),
   address: Yup.string().required('required'),
   address2: Yup.string(),
@@ -50,8 +66,13 @@ const Main = () => {
     validationSchema,
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2))
+
+      formik.resetForm()
     }
   })
+
+  // console.log("touched", formik.values.firstName);
+
 
   return (
     <div>
@@ -108,8 +129,16 @@ const Main = () => {
             <div className="row g-3">
               <div className="col-sm-6">
                 <label htmlFor='firstName' className="form-label">First name</label>
-                <input id='firstName' type="text"  {...formik.getFieldProps('firstName')} className="form-control" />
-                {formik.touched.firstName && formik.errors.firstName ? (
+                <input
+                  id='firstName'
+                  type="text"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  // {...formik.getFieldProps('firstName')} 
+                  className="form-control"
+                />
+                {formik.errors.firstName ? (
                   <small className='text-danger'>{formik.errors.firstName}</small>
                 ) : null}
               </div>
@@ -117,9 +146,9 @@ const Main = () => {
               <div className="col-sm-6">
                 <label htmlFor='lastName' className="form-label">Last name</label>
                 <input id='lastName' {...formik.getFieldProps('lastName')} type="text" className="form-control" />
-                {formik.touched.lastName && formik.errors.lastName ? (
+                {(formik.values.lastName || formik.errors.lastName) && (
                   <small className='text-danger'>{formik.errors.lastName}</small>
-                ) : null}
+                )}
               </div>
 
               <div className="col-12">
@@ -128,7 +157,7 @@ const Main = () => {
                   <span className="input-group-text">@</span>
                   <input id='userName' {...formik.getFieldProps('userName')} type="text" className="form-control" placeholder="Username" />
                 </div>
-                {formik.touched.userName && formik.errors.userName ? (
+                {formik.errors.userName ? (
                   <small className='text-danger'>{formik.errors.userName}</small>
                 ) : null}
               </div>
@@ -143,7 +172,7 @@ const Main = () => {
 
               <div className="col-12">
                 <label className="form-label">Address</label>
-                <input {...formik.getFieldProps('address')}  id='address' type="text" className="form-control" placeholder="1234 Main St" />
+                <input {...formik.getFieldProps('address')} id='address' type="text" className="form-control" placeholder="1234 Main St" />
                 {formik.touched.address && formik.errors.address ? (
                   <small className='text-danger'>{formik.errors.address}</small>
                 ) : null}
@@ -151,7 +180,7 @@ const Main = () => {
 
               <div className="col-12">
                 <label className="form-label">Address 2 <span className="text-muted">(Optional)</span></label>
-                <input {...formik.getFieldProps('address2')}  id='address2' type="text" className="form-control" placeholder="Apartment or suite" />
+                <input {...formik.getFieldProps('address2')} id='address2' type="text" className="form-control" placeholder="Apartment or suite" />
                 {formik.touched.address2 && formik.errors.address2 ? (
                   <small className='text-danger'>{formik.errors.address2}</small>
                 ) : null}
@@ -163,7 +192,7 @@ const Main = () => {
                   <option>Choose...</option>
                   <option>United States</option>
                 </select>
-                {formik.touched.country && formik.errors.country ? (
+                {formik.errors.country ? (
                   <small className='text-danger'>{formik.errors.country}</small>
                 ) : null}
               </div>
@@ -174,16 +203,16 @@ const Main = () => {
                   <option>Choose...</option>
                   <option>California</option>
                 </select>
-                {formik.touched.state && formik.errors.state ? (
+                {formik.errors.state ? (
                   <small className='text-danger'>{formik.errors.state}</small>
                 ) : null}
               </div>
 
               <div className="col-md-3">
                 <label className="form-label">Zip</label>
-                <input {...formik.getFieldProps('zip')}  id='zip' type="number" className="form-control" />
-              {formik.touched.zip && formik.errors.zip ? (
-                  <small className='text-danger'>{formik.errors.zip}</small>
+                <input {...formik.getFieldProps('zip')} id='zip' className="form-control" />
+                {formik.errors.zip ? (
+                  <small className='text-danger'>{formik.errors.zip && "only receive Number"} </small>
                 ) : null}
               </div>
             </div>
@@ -206,7 +235,7 @@ const Main = () => {
 
             <div className="my-3">
               <div className="form-check">
-                <input {...formik.getFieldProps('paymentMethod')}  name="paymentMethod" type="radio" className="form-check-input" defaultValue={'Credit Card'} value="Credit card" />
+                <input {...formik.getFieldProps('paymentMethod')} name="paymentMethod" type="radio" className="form-check-input" value="Credit card" />
                 <label className="form-check-label" >Credit card</label>
               </div>
               <div className="form-check">
@@ -217,23 +246,24 @@ const Main = () => {
                 <input {...formik.getFieldProps('paymentMethod')} name="paymentMethod" type="radio" className="form-check-input" value="Paypal" />
                 <label className="form-check-label" >PayPal</label>
               </div>
+              {formik.errors.paymentMethod ? <small className='text-danger'>{formik.errors.nameOnCard}</small> : null}
             </div>
 
             <div className="row gy-3">
               <div className="col-md-6">
                 <label className="form-label">Name on card</label>
-                <input {...formik.getFieldProps('nameOnCard')}  id='nameOnCard' type="text" className="form-control" />
+                <input {...formik.getFieldProps('nameOnCard')} id='nameOnCard' type="text" className="form-control" />
                 <small className="text-muted">Full name as displayed on card</small>
                 {formik.touched.nameOnCard && formik.errors.nameOnCard ? (
-                  <small className='text-danger'>{formik.errors.nameOnCard}</small>
+                  <small className='text-danger d-block'>{formik.errors.nameOnCard}</small>
                 ) : null}
               </div>
 
               <div className="col-md-6">
                 <label className="form-label">Credit card number</label>
-                <input {...formik.getFieldProps('cardNumber')}  id='cardNumber' type="number" className="form-control" />
-                {formik.touched.cardNumber && formik.errors.cardNumber ? (
-                  <small className='text-danger'>{formik.errors.cardNumber}</small>
+                <input {...formik.getFieldProps('cardNumber')} id='cardNumber' className="form-control" />
+                {formik.errors.cardNumber ? (
+                  <small className='text-danger'>{formik.errors.cardNumber && "only receive Number"} </small>
                 ) : null}
               </div>
 
@@ -247,9 +277,9 @@ const Main = () => {
 
               <div className="col-md-3">
                 <label className="form-label">CVV</label>
-                <input {...formik.getFieldProps('cvv')}  id='cvv' type="number" className="form-control" />
-                {formik.touched.cvv && formik.errors.cvv ? (
-                  <small className='text-danger'>{formik.errors.cvv}</small>
+                <input {...formik.getFieldProps('cvv')} id='cvv' className="form-control" />
+                {formik.errors.cvv ? (
+                  <small className='text-danger '>{formik.errors.cvv && "only receive Number"} </small>
                 ) : null}
               </div>
             </div>

@@ -7,3 +7,15 @@
 .container{
   max-width: 960px !important;
 }
+/* input[type=text] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #0a8dff;
+  border-radius: 3px;
+  outline: 0;
+} */
+
+/* input[type=text]:focus {
+  outline: 0.5px solid #0a8dff95;
+  border-radius: 1px;
+} */
