@@ -222,12 +222,12 @@ const Main = () => {
                   <input {...formik.getFieldProps('userName')} id='userName' type="text" className="form-control" placeholder="Username" />
                 </div>
                 <ul className='list-unstyled'>
-                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'success'}`}>Must Contain One Lowercase Character</small></li>
-                  <li><small className={`${''}`}>Must Contain One Uppercase Character</small></li>
-                  <li><small>Must Contain One Special Case Character</small></li>
-                  <li><small>Must Contain One Number Character</small></li>
-                  <li><small>Must Contain 6 Characters</small></li>
-                  <li><small>Maximum 8 Characters</small></li>
+                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Lowercase Character</small></li>
+                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Uppercase Character</small></li>
+                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Number Character</small></li>
+                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Special Case Character</small></li>
+                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain 6 Characters</small></li>
+                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Maximum 8 Characters</small></li>
 
                   {/* {console.log(formik.getFieldProps('userName'))}
                   {console.log(formik.values.userName)} */}
