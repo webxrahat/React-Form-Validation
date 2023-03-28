@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -28,22 +28,22 @@ const validationSchema = Yup.object({
   userName: Yup.string().required('required')
     .matches(
       /^(?=.*[a-z])/,
-      " Must Contain One Lowercase Character"
+      "Must Contain One Lowercase Character"
     )
     .matches(
       /^(?=.*[A-Z])/,
-      "  Must Contain One Uppercase Character"
+      "Must Contain One Uppercase Character"
     )
     .matches(
       /^(?=.*[0-9])/,
-      "  Must Contain One Number Character"
+      "Must Contain One Number Character"
     )
     .matches(
       /^(?=.*[!@#\$%\^&\*])/,
-      "  Must Contain  One Special Case Character"
+      "Must Contain One Special Case Character"
     )
-    .min(8, 'Must Contain 8 Characters')
-    .max(20, 'Maximum 20 Characters')
+    .min(6, 'Must Contain 6 Characters')
+    .max(8, 'Maximum 8 Characters')
   ,
   email: Yup.string().email('Invalid email address').required('required'),
   address: Yup.string().required('required'),
@@ -60,18 +60,82 @@ const validationSchema = Yup.object({
 })
 
 
+
 const Main = () => {
+  // const [userData, setUserData] = useState({
+  //   required: false,
+  //   lowercase: false,
+  //   uppercase: false,
+  //   number: false,
+  //   special: false
+  // })
+
+
   const formik = useFormik({
     initialValues,
     validationSchema,
+    // validate: (values, props) => {
+    //   const newData = { ...userData }
+    //   const userError = {};
+    //   if (!values.userName) {
+    //     userError.userName = 'Required';
+    //     newData.required = true
+    //   }
+    //   else if (/^(?=.*[a-z])/.test(values.userName)) {
+    //     userError.userName = 'Must Contain One Lowercase Character';
+    //     newData.lowercase = true
+    //   }
+    //   else if (/^(?=.*[A-Z])/.test(values.userName)) {
+    //     userError.userName = 'Must Contain One uppercase Character';
+    //     newData.uppercase = true
+    //   }
+    //   console.log("newData", newData);
+    //   // setUserData(newData)
+    //   return userError;
+    // },
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2))
-
       formik.resetForm()
     }
   })
-
+  // const data = formik.values.userName;
+  // const valueOfData = data.filter((n) => n.data.toLowerCase().includes(n.toLowerCase()))
+  // console.log(valueOfData)
   // console.log("touched", formik.values.firstName);
+
+  // const colorChange = (values) =>{
+
+  // }
+
+  // function fieldData() {
+  //   const data = formik.values.userName;
+  //   const valueOfData = data.filter((n) => n.data.toLowerCase().includes(n.toLowerCase()))
+  //   console.log(valueOfData)
+  // }
+  // fieldData()
+
+
+
+  if (formik.values.userName === '') {
+    console.log("true");
+
+  } else {
+    console.log("false");
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   return (
@@ -155,11 +219,30 @@ const Main = () => {
                 <label className="form-label">Username</label>
                 <div className="input-group">
                   <span className="input-group-text">@</span>
-                  <input id='userName' {...formik.getFieldProps('userName')} type="text" className="form-control" placeholder="Username" />
+                  <input {...formik.getFieldProps('userName')} id='userName' type="text" className="form-control" placeholder="Username" />
                 </div>
-                {formik.errors.userName ? (
-                  <small className='text-danger'>{formik.errors.userName}</small>
-                ) : null}
+                <ul className='list-unstyled'>
+                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'success'}`}>Must Contain One Lowercase Character</small></li>
+                  <li><small className={`${''}`}>Must Contain One Uppercase Character</small></li>
+                  <li><small>Must Contain One Special Case Character</small></li>
+                  <li><small>Must Contain One Number Character</small></li>
+                  <li><small>Must Contain 6 Characters</small></li>
+                  <li><small>Maximum 8 Characters</small></li>
+
+                  {/* {console.log(formik.getFieldProps('userName'))}
+                  {console.log(formik.values.userName)} */}
+                  {/*                   
+                  {formik.errors.userName ? (<small><li>{formik.errors.userName
+                    && "Must Contain One Uppercase Character"
+                    ? "Must Contain One Uppercase Character"
+                    : ''}</li></small>) : null}
+                  {formik.errors.userName ? (<small><li>{formik.errors.userName && "Must Contain One Lowercase Character"}</li></small>) : null}
+                  {formik.errors.userName ? (<small><li>{formik.errors.userName && "Must Contain One Number Character"}</li></small>) : null}
+                  {formik.errors.userName ? (<small><li>{formik.errors.userName && "Must Contain  One Special Case Character"}</li></small>) : null}
+                  {formik.errors.userName ? (<small><li>{formik.errors.userName && "Must Contain 8 Characters"}</li></small>) : null}
+                  {formik.errors.userName ? (<small><li>{formik.errors.userName && "Maximum 8 Characters"}</li></small>) : null} */}
+                </ul>
+                {/* {formik.errors.userName ? (<small>{formik.errors.userName}</small>) : null} */}
               </div>
 
               <div className="col-12">
