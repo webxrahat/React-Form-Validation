@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 
+
 const initialValues = {
   firstName: "",
   lastName: "",
@@ -116,24 +117,112 @@ const Main = () => {
 
 
 
-  if (formik.values.userName === '') {
-    console.log("true");
+  // if (formik.values.userName === '') {
+  //   console.log("true");
 
-  } else {
-    console.log("false");
-  }
+  // } else {
+  //   console.log("false");
+  // }
+  // {
+
+  const lower = formik.values.userName
+  const data = lower.includes('a')
+  const capital = lower.includes('A')
+  const number = lower.includes('3')
+  const special = lower.includes('.')
+
+  // console.log(data);
+
+  //   console.log(lower);
+  // }
+  // const lowerCase = () => {
+  //   const lower = formik.values.userName.toLowerCase()
+  //   // console.log(lower);
+  //   if (lower) {
+  //     console.log("upperCase");
+  //   } else {
+  //     console.log("lowerCase");
+  //   }
+  // }
+  // lowerCase()
+
+  // {
+  //   const upper = formik.values.userName
+  //   console.log(upper);
+  // // }
+  // const myInput = document.getElementById("userName")
+  // const Lowercase = document.getElementById("Lowercase")
+  // const upperCase = document.getElementById("upperCase")
+  // const Number = document.getElementById("Number")
+  // const Special = document.getElementById("Special")
+  // const Characters6 = document.getElementById("6Characters")
+  // const Characters8 = document.getElementById("8Characters")
+
+
+  // myInput.addEventListener('input', () => {
+  //   const inputValue = myInput.value.trim();
+
+  //   if (inputValue === '') {
+  //     Lowercase.style.color = 'black'
+  //     upperCase.style.color = 'black'
+  //     Number.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters6.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters8.style.color = 'black'
+  //   } else if (inputValue.toLowerCase() === inputValue) {
+  //     Lowercase.style.color = 'green'
+  //     upperCase.style.color = 'black'
+  //     Number.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters6.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters8.style.color = 'black'
+  //   } else if (inputValue.toUpperCase() === inputValue) {
+  //     Lowercase.style.color = 'black'
+  //     upperCase.style.color = 'green'
+  //     Number.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters6.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters8.style.color = 'black'
+  //   }
 
 
 
 
+  // })
+  // const addEvent = () => {
+  //   const inputValue = formik.values.userName;
+  //   if (inputValue === '') {
+  //     Lowercase.style.color = 'black'
+  //     upperCase.style.color = 'black'
+  //     Number.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters6.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters8.style.color = 'black'
+  //   } else if (inputValue.toLowerCase() === inputValue) {
+  //     Lowercase.style.color = 'green'
+  //     upperCase.style.color = 'black'
+  //     Number.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters6.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters8.style.color = 'black'
+  //   } else if (inputValue.toUpperCase() === inputValue) {
+  //     Lowercase.style.color = 'black'
+  //     upperCase.style.color = 'green'
+  //     Number.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters6.style.color = 'black'
+  //     Special.style.color = 'black'
+  //     Characters8.style.color = 'black'
+  //   }
 
-
-
-
-
-
-
-
+  // }
+  // addEvent()
+  // console.log(addEvent());
 
 
 
@@ -202,15 +291,15 @@ const Main = () => {
                   // {...formik.getFieldProps('firstName')} 
                   className="form-control"
                 />
-                {formik.errors.firstName ? (
+                {(formik.values.firstName === '' || formik.errors.firstName) && (
                   <small className='text-danger'>{formik.errors.firstName}</small>
-                ) : null}
+                )}
               </div>
 
               <div className="col-sm-6">
                 <label htmlFor='lastName' className="form-label">Last name</label>
                 <input id='lastName' {...formik.getFieldProps('lastName')} type="text" className="form-control" />
-                {(formik.values.lastName || formik.errors.lastName) && (
+                {(formik.values.lastName === '' || formik.errors.lastName) && (
                   <small className='text-danger'>{formik.errors.lastName}</small>
                 )}
               </div>
@@ -221,16 +310,28 @@ const Main = () => {
                   <span className="input-group-text">@</span>
                   <input {...formik.getFieldProps('userName')} id='userName' type="text" className="form-control" placeholder="Username" />
                 </div>
-                <ul className='list-unstyled'>
-                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Lowercase Character</small></li>
-                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Uppercase Character</small></li>
-                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Number Character</small></li>
-                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain One Special Case Character</small></li>
-                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Must Contain 6 Characters</small></li>
-                  <li><small className={`text-${formik.values.userName === '' ? 'dark' : 'danger'}`}>Maximum 8 Characters</small></li>
+                <ul className='list-unstyled' >
+                  <li><small
+                    className={`text-${formik.values.userName && data ? 'success' : 'danger'}`}
+                  >Must Contain One Lowercase Character</small></li>
+                  <li><small
+                    className={`text-${formik.values.userName && capital ? 'success' : 'danger'}`}
+                  >Must Contain One Uppercase Character</small></li>
+                  <li><small
+                    className={`text-${formik.values.userName && number ? 'success' : 'danger'}`}
+                  >Must Contain One Number Character</small></li>
+                  <li><small
+                    className={`text-${formik.values.userName && special ? 'success' : 'danger'}`}
+                  >Must Contain One Special Case Character</small></li>
+                  <li><small
+                    className={`text-${formik.values.userName.length >= 6 ? 'success' : 'danger'}`}
+                  >Must Contain 6 Characters</small></li>
+                  <li><small
+                    className={`text-${formik.values.userName.length > 8 ? 'danger' : 'dark'}`}
+                  >Maximum 8 Characters</small></li>
 
-                  {/* {console.log(formik.getFieldProps('userName'))}
-                  {console.log(formik.values.userName)} */}
+                  {/* {/* {console.log(formik.getFieldProps('userName'))} */}
+                  {/* {console.log(formik.values.userName)} */}
                   {/*                   
                   {formik.errors.userName ? (<small><li>{formik.errors.userName
                     && "Must Contain One Uppercase Character"
