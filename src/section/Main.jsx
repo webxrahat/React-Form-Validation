@@ -291,9 +291,7 @@ const Main = () => {
                   // {...formik.getFieldProps('firstName')} 
                   className="form-control"
                 />
-                {(formik.values.firstName === '' || formik.errors.firstName) && (
-                  <small className='text-danger'>{formik.errors.firstName}</small>
-                )}
+                {formik.touched.firstName && formik.errors.firstName ? <small className='text-danger'>{formik.errors.firstName}</small> : null}
               </div>
 
               <div className="col-sm-6">
