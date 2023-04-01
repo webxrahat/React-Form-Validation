@@ -126,7 +126,7 @@ const Main = () => {
   // {
 
   const lower = formik.values.userName
-  const data = lower.includes('a')
+  const data = lower.includes('s')
   const capital = lower.includes('A')
   const number = lower.includes('3')
   const special = lower.includes('.')
